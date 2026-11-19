@@ -1,539 +1,523 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="pl">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2113.65">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test 3-back – Badanie pamięci roboczej</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --text: #1b2230;
+      --muted: #5c667a;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --ok: #15803d;
+      --err: #b91c1c;
+      --border: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .box {
+      width: 100%;
+      max-width: 720px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 36px 32px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      text-align: center;
+    }
+
+    h1 { margin: 0 0 12px; font-size: 1.75rem; }
+    p { line-height: 1.6; color: var(--muted); margin: 0 0 16px; }
+    .lead { color: var(--text); font-size: 1.05rem; }
+
+    .field {
+      margin: 20px auto;
+      max-width: 340px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 11px 14px;
+      font-size: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+    }
+
+    button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 6px;
+    }
+
+    button:hover { background: var(--accent-hover); }
+    button.secondary {
+      background: #e2e8f0;
+      color: var(--text);
+    }
+    button.secondary:hover { background: #cbd5e1; }
+
+    .stimulus {
+      font-size: 5.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 2px;
+      color: var(--text);
+    }
+
+    .fixation {
+      font-size: 3rem;
+      color: #94a3b8;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hint {
+      margin-top: 18px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .feedback {
+      margin-top: 14px;
+      min-height: 28px;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .ok { color: var(--ok); }
+    .err { color: var(--err); }
+
+    .progress {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 0.95rem;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th { color: var(--muted); font-weight: 600; }
+
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="pl"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Test 3-back – Badanie pamięci roboczej&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>:root {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--bg: #f4f6f9;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--card: #ffffff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--text: #1b2230;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--muted: #5c667a;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--accent: #2563eb;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--accent-hover: #1d4ed8;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--ok: #15803d;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--err: #b91c1c;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--border: #e2e8f0;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>* { box-sizing: border-box; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>body {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: var(--bg);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>min-height: 100vh;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.box {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width: 720px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: var(--card);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid var(--border);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 36px 32px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-align: center;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>h1 { margin: 0 0 12px; font-size: 1.75rem; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>p { line-height: 1.6; color: var(--muted); margin: 0 0 16px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.lead { color: var(--text); font-size: 1.05rem; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.field {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 20px auto;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width: 340px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-align: left;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>label {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: block;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.9rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 6px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>input[type="text"] {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 11px 14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: 1px solid #cbd5e1;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>button {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: var(--accent);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: #fff;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border: none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 12px 24px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 6px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>button:hover { background: var(--accent-hover); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>button.secondary {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background: #e2e8f0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>button.secondary:hover { background: #cbd5e1; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.stimulus {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 5.5rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 700;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>line-height: 1.1;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>min-height: 120px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>letter-spacing: 2px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--text);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.fixation {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 3rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: #94a3b8;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>min-height: 120px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display: flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items: center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content: center;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hint {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 18px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.95rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.feedback {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-top: 14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>min-height: 28px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight: 600;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 1rem;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.ok { color: var(--ok); }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.err { color: var(--err); }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.progress {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.85rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color: var(--muted);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin-bottom: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>table {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width: 100%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-collapse: collapse;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin: 20px 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size: 0.95rem;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-align: left;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>th, td {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding: 10px 12px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-bottom: 1px solid var(--border);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>th { color: var(--muted); font-weight: 600; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>.hidden { display: none; }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="box"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- EKRAN 1: POWITANIE I INSTRUKCJA --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="screen-intro"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;h1&gt;Test 3-back&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;p class="lead"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>Na ekranie będą pojawiać się kolejno litery. Twoim zadaniem jest nacisnąć</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;strong&gt;SPACJĘ&lt;/strong&gt; wtedy, gdy wyświetlana litera jest</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;strong&gt;taka sama jak litera, która pojawiła się 3 kroki wcześniej&lt;/strong&gt;.</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>Jeśli litera jest inna niż ta sprzed 3 kroków — &lt;strong&gt;nie naciskaj żadnego klawisza&lt;/strong&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>i poczekaj na kolejną literę. Reaguj tak szybko i dokładnie, jak potrafisz.</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/p&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="field"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;label for="participant-id"&gt;Kod / ID badanego&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;input type="text" id="participant-id" placeholder="np. P01" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="btn-start-practice"&gt;Rozpocznij trening (10 prób)&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- EKRAN 2: PRZEJŚCIE DO TESTU GŁÓWNEGO --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="screen-ready" class="hidden"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;h1&gt;Trening zakończony&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;p class="lead"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>Za chwilę rozpocznie się właściwy test &lt;strong&gt;3-back&lt;/strong&gt; (30 prób).</p>
-<p class="p1"><span class="Apple-converted-space">        </span>W części głównej nie będzie już informacji zwrotnej po każdej literze.</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="btn-start-main"&gt;Rozpocznij test 3-back&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- EKRAN 3: PRÓBA EKSPERYMENTALNA --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="screen-trial" class="hidden"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="progress" id="progress-label"&gt;Próba 1 / 30&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stimulus" id="stimulus-area"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="hint"&gt;Naciśnij &lt;strong&gt;SPACJĘ&lt;/strong&gt;, jeśli litera była &lt;strong&gt;3 kroki temu&lt;/strong&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="feedback" id="feedback-area"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- EKRAN 4: WYNIKI --&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="screen-results" class="hidden"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;h1&gt;Koniec testu&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;p id="save-status"&gt;Dziękujemy za udział w badaniu.&lt;/p&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;table&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;tbody id="summary-table"&gt;&lt;/tbody&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/table&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="btn-download-csv"&gt;Pobierz wyniki (CSV)&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button id="btn-restart" class="secondary"&gt;Wykonaj ponownie&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const CONFIG = {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>nBack: 3,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>practiceTrials: 10,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>practiceTargets: 3,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>mainTrials: 30,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>mainTargets: 10,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>stimDurationMs: 1500,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>isiDurationMs: 500,</p>
-<p class="p1"><span class="Apple-converted-space">      </span>letters: ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T"],</p>
-<p class="p1"><span class="Apple-converted-space">      </span>googleSheetsWebhookUrl: ""</p>
-<p class="p1"><span class="Apple-converted-space">    </span>};</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>let participantId = "anonim";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let phase = "idle";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let sequence = [];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let currentIndex = 0;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let stimStartTime = 0;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let respondedThisTrial = false;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let responseRtMs = null;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let trialRecords = [];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let stimTimer = null;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let nextTrialTimer = null;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const elIntro = document.getElementById("screen-intro");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const elReady = document.getElementById("screen-ready");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const elTrial = document.getElementById("screen-trial");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const elResults = document.getElementById("screen-results");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const elProgress = document.getElementById("progress-label");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const elStimulus = document.getElementById("stimulus-area");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const elFeedback = document.getElementById("feedback-area");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const elSummary = document.getElementById("summary-table");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const elSaveStatus = document.getElementById("save-status");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const elIdInput = document.getElementById("participant-id");</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>const urlParams = new URLSearchParams(window.location.search);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (urlParams.get("id")) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>elIdInput.value = urlParams.get("id");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function showScreen(screenEl) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>[elIntro, elReady, elTrial, elResults].forEach(s =&gt; s.classList.add("hidden"));</p>
-<p class="p1"><span class="Apple-converted-space">      </span>screenEl.classList.remove("hidden");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function randomItem(arr, excludeArr = []) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const pool = arr.filter(x =&gt; !excludeArr.includes(x));</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return pool[Math.floor(Math.random() * pool.length)];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function shuffle(arr) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const copy = arr.slice();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>for (let i = copy.length - 1; i &gt; 0; i--) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const j = Math.floor(Math.random() * (i + 1));</p>
-<p class="p1"><span class="Apple-converted-space">        </span>[copy[i], copy[j]] = [copy[j], copy[i]];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return copy;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function generateSequence(totalTrials, targetCount, n) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const eligibleIndices = [];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>for (let i = n; i &lt; totalTrials; i++) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>eligibleIndices.push(i);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const chosenTargets = new Set(shuffle(eligibleIndices).slice(0, targetCount));</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const items = [];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>for (let i = 0; i &lt; totalTrials; i++) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const isTarget = chosenTargets.has(i);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>let letter;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (isTarget) {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>letter = items[i - n].letter;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>const forbidden = [];</p>
-<p class="p1"><span class="Apple-converted-space">          </span>if (i &gt;= n) forbidden.push(items[i - n].letter);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>letter = randomItem(CONFIG.letters, forbidden);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">        </span>items.push({</p>
-<p class="p1"><span class="Apple-converted-space">          </span>trialNumber: i + 1,</p>
-<p class="p1"><span class="Apple-converted-space">          </span>letter,</p>
-<p class="p1"><span class="Apple-converted-space">          </span>condition: isTarget ? "target" : "nontarget"</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return items;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function startBlock(selectedPhase) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>clearTimeout(stimTimer);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>clearTimeout(nextTrialTimer);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>phase = selectedPhase;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>currentIndex = 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>trialRecords = [];</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const total = phase === "practice" ? CONFIG.practiceTrials : CONFIG.mainTrials;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const targets = phase === "practice" ? CONFIG.practiceTargets : CONFIG.mainTargets;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>sequence = generateSequence(total, targets, CONFIG.nBack);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>showScreen(elTrial);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>runTrial();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function runTrial() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (currentIndex &gt;= sequence.length) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>finishBlock();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const item = sequence[currentIndex];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>respondedThisTrial = false;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>responseRtMs = null;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>elFeedback.textContent = "";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>elFeedback.className = "feedback";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>elProgress.textContent =</p>
-<p class="p1"><span class="Apple-converted-space">        </span>(phase === "practice" ? "[TRENING] " : "") +</p>
-<p class="p1"><span class="Apple-converted-space">        </span>`Próba ${currentIndex + 1} / ${sequence.length}`;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>elStimulus.className = "stimulus";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>elStimulus.textContent = item.letter;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>stimStartTime = performance.now();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>stimTimer = setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>elStimulus.className = "fixation";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>elStimulus.textContent = "+";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}, CONFIG.stimDurationMs);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>nextTrialTimer = setTimeout(() =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>finalizeTrial(item);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}, CONFIG.stimDurationMs + CONFIG.isiDurationMs);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function finalizeTrial(item) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const isTarget = item.condition === "target";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const pressedSpace = respondedThisTrial;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>let outcome;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>let correct = 0;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (isTarget &amp;&amp; pressedSpace) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>outcome = "hit";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>correct = 1;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>} else if (isTarget &amp;&amp; !pressedSpace) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>outcome = "miss";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>correct = 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>} else if (!isTarget &amp;&amp; pressedSpace) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>outcome = "false_alarm";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>correct = 0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>outcome = "correct_rejection";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>correct = 1;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>trialRecords.push({</p>
-<p class="p1"><span class="Apple-converted-space">        </span>participantId,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>phase,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>trialNumber: item.trialNumber,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>letter: item.letter,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>condition: item.condition,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>responded: pressedSpace ? 1 : 0,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>rtMs: responseRtMs !== null ? Math.round(responseRtMs) : "",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>outcome,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>correct</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (phase === "practice") {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (outcome === "hit") {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>elFeedback.textContent = "Dobrze! To był cel (zgodny z literą sprzed 3 kroków).";</p>
-<p class="p1"><span class="Apple-converted-space">          </span>elFeedback.classList.add("ok");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else if (outcome === "miss") {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>elFeedback.textContent = "Przegapiony cel — ta litera była 3 kroki wcześniej.";</p>
-<p class="p1"><span class="Apple-converted-space">          </span>elFeedback.classList.add("err");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else if (outcome === "false_alarm") {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>elFeedback.textContent = "Fałszywy alarm — ta litera nie była 3 kroki wcześniej.";</p>
-<p class="p1"><span class="Apple-converted-space">          </span>elFeedback.classList.add("err");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>elFeedback.textContent = "Poprawny brak reakcji.";</p>
-<p class="p1"><span class="Apple-converted-space">          </span>elFeedback.classList.add("ok");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>currentIndex += 1;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>runTrial();</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function finishBlock() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const prevPhase = phase;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>phase = "idle";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (prevPhase === "practice") {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>showScreen(elReady);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const summary = computeSummary(trialRecords);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>renderSummary(summary);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>showScreen(elResults);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>sendToGoogleSheetsIfConfigured(summary, trialRecords);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function computeSummary(records) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const hits = records.filter(r =&gt; r.outcome === "hit").length;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const misses = records.filter(r =&gt; r.outcome === "miss").length;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const falseAlarms = records.filter(r =&gt; r.outcome === "false_alarm").length;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const correctRejections = records.filter(r =&gt; r.outcome === "correct_rejection").length;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const total = records.length || 1;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const correctSum = records.reduce((acc, r) =&gt; acc + r.correct, 0);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const accuracyPct = ((correctSum / total) * 100).toFixed(1);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const rts = records</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.filter(r =&gt; r.responded === 1 &amp;&amp; typeof r.rtMs === "number")</p>
-<p class="p1"><span class="Apple-converted-space">        </span>.map(r =&gt; r.rtMs);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const meanRtMs = rts.length</p>
-<p class="p1"><span class="Apple-converted-space">        </span>? Math.round(rts.reduce((a, b) =&gt; a + b, 0) / rts.length)</p>
-<p class="p1"><span class="Apple-converted-space">        </span>: null;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>return {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>participantId,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>timestampIso: new Date().toISOString(),</p>
-<p class="p1"><span class="Apple-converted-space">        </span>trialsTotal: records.length,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>hits,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>misses,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>falseAlarms,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>correctRejections,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>accuracyPct,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>meanRtMs: meanRtMs !== null ? meanRtMs : ""</p>
-<p class="p1"><span class="Apple-converted-space">      </span>};</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function renderSummary(s) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>elSummary.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;tr&gt;&lt;th&gt;ID badanego&lt;/th&gt;&lt;td&gt;${escapeHtml(s.participantId)}&lt;/td&gt;&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;tr&gt;&lt;th&gt;Trafienia (Hits)&lt;/th&gt;&lt;td&gt;${s.hits}&lt;/td&gt;&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;tr&gt;&lt;th&gt;Pominięcia (Misses)&lt;/th&gt;&lt;td&gt;${s.misses}&lt;/td&gt;&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;tr&gt;&lt;th&gt;Fałszywe alarmy (False Alarms)&lt;/th&gt;&lt;td&gt;${s.falseAlarms}&lt;/td&gt;&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;tr&gt;&lt;th&gt;Poprawne odrzucenia (Correct Rejections)&lt;/th&gt;&lt;td&gt;${s.correctRejections}&lt;/td&gt;&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;tr&gt;&lt;th&gt;Dokładność (Accuracy)&lt;/th&gt;&lt;td&gt;${s.accuracyPct}%&lt;/td&gt;&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;tr&gt;&lt;th&gt;Średni czas reakcji (Mean RT)&lt;/th&gt;&lt;td&gt;${s.meanRtMs !== "" ? s.meanRtMs + " ms" : "brak reakcji"}&lt;/td&gt;&lt;/tr&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function escapeHtml(str) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return String(str).replace(/[&amp;&lt;&gt;"']/g, m =&gt; ({</p>
-<p class="p1"><span class="Apple-converted-space">        </span>"&amp;": "&amp;amp;", "&lt;": "&amp;lt;", "&gt;": "&amp;gt;", '"': "&amp;quot;", "'": "&amp;#39;"</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}[m]));</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function buildCsv(records) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const headers = [</p>
-<p class="p1"><span class="Apple-converted-space">        </span>"participant_id", "phase", "trial_number", "letter",</p>
-<p class="p1"><span class="Apple-converted-space">        </span>"condition", "responded", "rt_ms", "outcome", "correct"</p>
-<p class="p1"><span class="Apple-converted-space">      </span>];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const lines = [headers.join(",")];</p>
-<p class="p1"><span class="Apple-converted-space">      </span>for (const r of records) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const row = [</p>
-<p class="p1"><span class="Apple-converted-space">          </span>r.participantId, r.phase, r.trialNumber, r.letter,</p>
-<p class="p1"><span class="Apple-converted-space">          </span>r.condition, r.responded, r.rtMs, r.outcome, r.correct</p>
-<p class="p1"><span class="Apple-converted-space">        </span>].map(val =&gt; `"${String(val).replace(/"/g, '""')}"`);</p>
-<p class="p1"><span class="Apple-converted-space">        </span>lines.push(row.join(","));</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>return lines.join("\n");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function downloadCsv() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const csvContent = buildCsv(trialRecords);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const url = URL.createObjectURL(blob);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const a = document.createElement("a");</p>
-<p class="p1"><span class="Apple-converted-space">      </span>a.href = url;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>a.download = `3back_${participantId}_${Date.now()}.csv`;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>a.click();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>URL.revokeObjectURL(url);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>async function sendToGoogleSheetsIfConfigured(summary, records) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (!CONFIG.googleSheetsWebhookUrl) return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>elSaveStatus.textContent = "Zapisywanie wyników do arkusza...";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>try {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>await fetch(CONFIG.googleSheetsWebhookUrl, {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>method: "POST",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>mode: "no-cors",</p>
-<p class="p1"><span class="Apple-converted-space">          </span>headers: { "Content-Type": "application/json" },</p>
-<p class="p1"><span class="Apple-converted-space">          </span>body: JSON.stringify({ summary, records })</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>elSaveStatus.textContent = "Wyniki zostały zapisane.";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>} catch (err) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>elSaveStatus.textContent = "Nie udało się wysłać automatycznie — pobierz plik CSV przyciskiem poniżej.";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.addEventListener("keydown", (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (phase !== "practice" &amp;&amp; phase !== "main") return;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (e.code === "Space" || e.key === " ") {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>e.preventDefault();</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (!respondedThisTrial) {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>respondedThisTrial = true;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>responseRtMs = performance.now() - stimStartTime;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("btn-start-practice").addEventListener("click", () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const val = elIdInput.value.trim();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>participantId = val || "anonim";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>startBlock("practice");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("btn-start-main").addEventListener("click", () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>startBlock("main");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("btn-download-csv").addEventListener("click", downloadCsv);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("btn-restart").addEventListener("click", () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>showScreen(elIntro);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <div class="box">
+    <!-- EKRAN 1: POWITANIE I INSTRUKCJA -->
+    <div id="screen-intro">
+      <h1>Test 3-back</h1>
+      <p class="lead">
+        Na ekranie będą pojawiać się kolejno litery. Twoim zadaniem jest nacisnąć
+        <strong>SPACJĘ</strong> wtedy, gdy wyświetlana litera jest
+        <strong>taka sama jak litera, która pojawiła się 3 kroki wcześniej</strong>.
+      </p>
+      <p>
+        Jeśli litera jest inna niż ta sprzed 3 kroków — <strong>nie naciskaj żadnego klawisza</strong>
+        i poczekaj na kolejną literę. Reaguj tak szybko i dokładnie, jak potrafisz.
+      </p>
+
+      <div class="field">
+        <label for="participant-id">Kod / ID badanego</label>
+        <input type="text" id="participant-id" placeholder="np. P01" />
+      </div>
+
+      <button id="btn-start-practice">Rozpocznij trening (10 prób)</button>
+    </div>
+
+    <!-- EKRAN 2: PRZEJŚCIE DO TESTU GŁÓWNEGO -->
+    <div id="screen-ready" class="hidden">
+      <h1>Trening zakończony</h1>
+      <p class="lead">
+        Za chwilę rozpocznie się właściwy test <strong>3-back</strong> (30 prób).
+        W części głównej nie będzie już informacji zwrotnej po każdej literze.
+      </p>
+      <button id="btn-start-main">Rozpocznij test 3-back</button>
+    </div>
+
+    <!-- EKRAN 3: PRÓBA EKSPERYMENTALNA -->
+    <div id="screen-trial" class="hidden">
+      <div class="progress" id="progress-label">Próba 1 / 30</div>
+      <div class="stimulus" id="stimulus-area"></div>
+      <div class="hint">Naciśnij <strong>SPACJĘ</strong>, jeśli litera była <strong>3 kroki temu</strong></div>
+      <div class="feedback" id="feedback-area"></div>
+    </div>
+
+    <!-- EKRAN 4: WYNIKI -->
+    <div id="screen-results" class="hidden">
+      <h1>Koniec testu</h1>
+      <p id="save-status">Dziękujemy za udział w badaniu.</p>
+
+      <table>
+        <tbody id="summary-table"></tbody>
+      </table>
+
+      <button id="btn-download-csv">Pobierz wyniki (CSV)</button>
+      <button id="btn-restart" class="secondary">Wykonaj ponownie</button>
+    </div>
+  </div>
+
+  <script>
+    const CONFIG = {
+      nBack: 3,
+      practiceTrials: 10,
+      practiceTargets: 3,
+      mainTrials: 30,
+      mainTargets: 10,
+      stimDurationMs: 1500,
+      isiDurationMs: 500,
+      letters: ["B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "R", "S", "T"],
+      googleSheetsWebhookUrl: ""
+    };
+
+    let participantId = "anonim";
+    let phase = "idle";
+    let sequence = [];
+    let currentIndex = 0;
+    let stimStartTime = 0;
+    let respondedThisTrial = false;
+    let responseRtMs = null;
+    let trialRecords = [];
+    let stimTimer = null;
+    let nextTrialTimer = null;
+
+    const elIntro = document.getElementById("screen-intro");
+    const elReady = document.getElementById("screen-ready");
+    const elTrial = document.getElementById("screen-trial");
+    const elResults = document.getElementById("screen-results");
+    const elProgress = document.getElementById("progress-label");
+    const elStimulus = document.getElementById("stimulus-area");
+    const elFeedback = document.getElementById("feedback-area");
+    const elSummary = document.getElementById("summary-table");
+    const elSaveStatus = document.getElementById("save-status");
+    const elIdInput = document.getElementById("participant-id");
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("id")) {
+      elIdInput.value = urlParams.get("id");
+    }
+
+    function showScreen(screenEl) {
+      [elIntro, elReady, elTrial, elResults].forEach(s => s.classList.add("hidden"));
+      screenEl.classList.remove("hidden");
+    }
+
+    function randomItem(arr, excludeArr = []) {
+      const pool = arr.filter(x => !excludeArr.includes(x));
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function shuffle(arr) {
+      const copy = arr.slice();
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function generateSequence(totalTrials, targetCount, n) {
+      const eligibleIndices = [];
+      for (let i = n; i < totalTrials; i++) {
+        eligibleIndices.push(i);
+      }
+      const chosenTargets = new Set(shuffle(eligibleIndices).slice(0, targetCount));
+
+      const items = [];
+      for (let i = 0; i < totalTrials; i++) {
+        const isTarget = chosenTargets.has(i);
+        let letter;
+        if (isTarget) {
+          letter = items[i - n].letter;
+        } else {
+          const forbidden = [];
+          if (i >= n) forbidden.push(items[i - n].letter);
+          letter = randomItem(CONFIG.letters, forbidden);
+        }
+        items.push({
+          trialNumber: i + 1,
+          letter,
+          condition: isTarget ? "target" : "nontarget"
+        });
+      }
+      return items;
+    }
+
+    function startBlock(selectedPhase) {
+      clearTimeout(stimTimer);
+      clearTimeout(nextTrialTimer);
+
+      phase = selectedPhase;
+      currentIndex = 0;
+      trialRecords = [];
+
+      const total = phase === "practice" ? CONFIG.practiceTrials : CONFIG.mainTrials;
+      const targets = phase === "practice" ? CONFIG.practiceTargets : CONFIG.mainTargets;
+      sequence = generateSequence(total, targets, CONFIG.nBack);
+
+      showScreen(elTrial);
+      runTrial();
+    }
+
+    function runTrial() {
+      if (currentIndex >= sequence.length) {
+        finishBlock();
+        return;
+      }
+
+      const item = sequence[currentIndex];
+      respondedThisTrial = false;
+      responseRtMs = null;
+      elFeedback.textContent = "";
+      elFeedback.className = "feedback";
+      elProgress.textContent =
+        (phase === "practice" ? "[TRENING] " : "") +
+        `Próba ${currentIndex + 1} / ${sequence.length}`;
+
+      elStimulus.className = "stimulus";
+      elStimulus.textContent = item.letter;
+      stimStartTime = performance.now();
+
+      stimTimer = setTimeout(() => {
+        elStimulus.className = "fixation";
+        elStimulus.textContent = "+";
+      }, CONFIG.stimDurationMs);
+
+      nextTrialTimer = setTimeout(() => {
+        finalizeTrial(item);
+      }, CONFIG.stimDurationMs + CONFIG.isiDurationMs);
+    }
+
+    function finalizeTrial(item) {
+      const isTarget = item.condition === "target";
+      const pressedSpace = respondedThisTrial;
+
+      let outcome;
+      let correct = 0;
+
+      if (isTarget && pressedSpace) {
+        outcome = "hit";
+        correct = 1;
+      } else if (isTarget && !pressedSpace) {
+        outcome = "miss";
+        correct = 0;
+      } else if (!isTarget && pressedSpace) {
+        outcome = "false_alarm";
+        correct = 0;
+      } else {
+        outcome = "correct_rejection";
+        correct = 1;
+      }
+
+      trialRecords.push({
+        participantId,
+        phase,
+        trialNumber: item.trialNumber,
+        letter: item.letter,
+        condition: item.condition,
+        responded: pressedSpace ? 1 : 0,
+        rtMs: responseRtMs !== null ? Math.round(responseRtMs) : "",
+        outcome,
+        correct
+      });
+
+      if (phase === "practice") {
+        if (outcome === "hit") {
+          elFeedback.textContent = "Dobrze! To był cel (zgodny z literą sprzed 3 kroków).";
+          elFeedback.classList.add("ok");
+        } else if (outcome === "miss") {
+          elFeedback.textContent = "Przegapiony cel — ta litera była 3 kroki wcześniej.";
+          elFeedback.classList.add("err");
+        } else if (outcome === "false_alarm") {
+          elFeedback.textContent = "Fałszywy alarm — ta litera nie była 3 kroki wcześniej.";
+          elFeedback.classList.add("err");
+        } else {
+          elFeedback.textContent = "Poprawny brak reakcji.";
+          elFeedback.classList.add("ok");
+        }
+      }
+
+      currentIndex += 1;
+      runTrial();
+    }
+
+    function finishBlock() {
+      const prevPhase = phase;
+      phase = "idle";
+
+      if (prevPhase === "practice") {
+        showScreen(elReady);
+        return;
+      }
+
+      const summary = computeSummary(trialRecords);
+      renderSummary(summary);
+      showScreen(elResults);
+      sendToGoogleSheetsIfConfigured(summary, trialRecords);
+    }
+
+    function computeSummary(records) {
+      const hits = records.filter(r => r.outcome === "hit").length;
+      const misses = records.filter(r => r.outcome === "miss").length;
+      const falseAlarms = records.filter(r => r.outcome === "false_alarm").length;
+      const correctRejections = records.filter(r => r.outcome === "correct_rejection").length;
+      const total = records.length || 1;
+      const correctSum = records.reduce((acc, r) => acc + r.correct, 0);
+      const accuracyPct = ((correctSum / total) * 100).toFixed(1);
+
+      const rts = records
+        .filter(r => r.responded === 1 && typeof r.rtMs === "number")
+        .map(r => r.rtMs);
+      const meanRtMs = rts.length
+        ? Math.round(rts.reduce((a, b) => a + b, 0) / rts.length)
+        : null;
+
+      return {
+        participantId,
+        timestampIso: new Date().toISOString(),
+        trialsTotal: records.length,
+        hits,
+        misses,
+        falseAlarms,
+        correctRejections,
+        accuracyPct,
+        meanRtMs: meanRtMs !== null ? meanRtMs : ""
+      };
+    }
+
+    function renderSummary(s) {
+      elSummary.innerHTML = `
+        <tr><th>ID badanego</th><td>${escapeHtml(s.participantId)}</td></tr>
+        <tr><th>Trafienia (Hits)</th><td>${s.hits}</td></tr>
+        <tr><th>Pominięcia (Misses)</th><td>${s.misses}</td></tr>
+        <tr><th>Fałszywe alarmy (False Alarms)</th><td>${s.falseAlarms}</td></tr>
+        <tr><th>Poprawne odrzucenia (Correct Rejections)</th><td>${s.correctRejections}</td></tr>
+        <tr><th>Dokładność (Accuracy)</th><td>${s.accuracyPct}%</td></tr>
+        <tr><th>Średni czas reakcji (Mean RT)</th><td>${s.meanRtMs !== "" ? s.meanRtMs + " ms" : "brak reakcji"}</td></tr>
+      `;
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, m => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[m]));
+    }
+
+    function buildCsv(records) {
+      const headers = [
+        "participant_id", "phase", "trial_number", "letter",
+        "condition", "responded", "rt_ms", "outcome", "correct"
+      ];
+      const lines = [headers.join(",")];
+      for (const r of records) {
+        const row = [
+          r.participantId, r.phase, r.trialNumber, r.letter,
+          r.condition, r.responded, r.rtMs, r.outcome, r.correct
+        ].map(val => `"${String(val).replace(/"/g, '""')}"`);
+        lines.push(row.join(","));
+      }
+      return lines.join("\n");
+    }
+
+    function downloadCsv() {
+      const csvContent = buildCsv(trialRecords);
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `3back_${participantId}_${Date.now()}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    async function sendToGoogleSheetsIfConfigured(summary, records) {
+      if (!CONFIG.googleSheetsWebhookUrl) return;
+      elSaveStatus.textContent = "Zapisywanie wyników do arkusza...";
+      try {
+        await fetch(CONFIG.googleSheetsWebhookUrl, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ summary, records })
+        });
+        elSaveStatus.textContent = "Wyniki zostały zapisane.";
+      } catch (err) {
+        elSaveStatus.textContent = "Nie udało się wysłać automatycznie — pobierz plik CSV przyciskiem poniżej.";
+      }
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (phase !== "practice" && phase !== "main") return;
+      if (e.code === "Space" || e.key === " ") {
+        e.preventDefault();
+        if (!respondedThisTrial) {
+          respondedThisTrial = true;
+          responseRtMs = performance.now() - stimStartTime;
+        }
+      }
+    });
+
+    document.getElementById("btn-start-practice").addEventListener("click", () => {
+      const val = elIdInput.value.trim();
+      participantId = val || "anonim";
+      startBlock("practice");
+    });
+
+    document.getElementById("btn-start-main").addEventListener("click", () => {
+      startBlock("main");
+    });
+
+    document.getElementById("btn-download-csv").addEventListener("click", downloadCsv);
+
+    document.getElementById("btn-restart").addEventListener("click", () => {
+      showScreen(elIntro);
+    });
+  </script>
 </body>
 </html>
